@@ -1,8 +1,12 @@
+import argparse
+
+from player_reader import PlayerReader
 from statistics_service import StatisticsService
 
 
-def main():
-    stats = StatisticsService()
+def main(url):
+    reader = PlayerReader(url)
+    stats = StatisticsService(reader)
     philadelphia_flyers_players = stats.team("PHI")
     top_scorers = stats.top(10)
 
@@ -18,4 +22,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("url", help="URL of the player data file")
+    args = parser.parse_args()
+    main(args.url)
