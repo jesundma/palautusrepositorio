@@ -26,6 +26,15 @@ class TestStatisticsService(unittest.TestCase):
             ["Semenko", "Lemieux", "Kurri", "Yzerman", "Gretzky"]
         )
 
+    def test_statistics_service_returns_a_correct_player_and_statitistics_with_search(self):
+        player = self.stats.search("Kurri")
+
+        self.assertIsNotNone(player)
+        self.assertEqual(
+            (player.name, player.team, player.goals, player.assists),
+            ("Kurri", "EDM", 37, 53)
+        )
+
     def test_statistics_service_returns_correct_order_of_players_by_points_for_3_players(self):
         # note that a list, top 3 has call value 3 (0,1,2)
         players = self.stats.top(2)
