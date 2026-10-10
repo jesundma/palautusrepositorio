@@ -48,11 +48,38 @@ class TestStatisticsService(unittest.TestCase):
             ["Semenko", "Kurri", "Gretzky"]
         )
 
-    def test_statistics_service_returns_correct_order_of_players_by_points_for_3_players(self):
-        # note that a list, top 3 has call value 3 (0,1,2)
-        players = self.stats.top(2)
+    def test_statistics_service_returns_correct_order_of_players_by_points_for_3_players_without_2_param(self):
+        from statistics_service import SortBy
+        players = self.stats.top(3)
 
         self.assertEqual(
             [player.name for player in players],
             ["Gretzky", "Lemieux", "Yzerman"]
+        )
+
+    def test_statistics_service_returns_correct_order_of_players_by_points_for_3_players_with_2_param(self):
+            from statistics_service import SortBy
+            players = self.stats.top(3, sort_order=SortBy.POINTS)
+    
+            self.assertEqual(
+                [player.name for player in players],
+                ["Gretzky", "Lemieux", "Yzerman"]
+            )
+
+    def test_statistics_service_returns_correct_order_of_players_by_assists_for_3_players(self):
+        from statistics_service import SortBy
+        players = self.stats.top(3, sort_order=SortBy.ASSISTS)
+
+        self.assertEqual(
+            [player.name for player in players],
+            ["Gretzky", "Yzerman", "Lemieux"]
+
+        )
+    def test_statistics_service_returns_correct_order_of_players_by_goals_for_3_players(self):
+        from statistics_service import SortBy
+        players = self.stats.top(3, sort_order=SortBy.GOALS)
+
+        self.assertEqual(
+            [player.name for player in players],
+            ["Lemieux", "Yzerman", "Kurri"]            
         )
