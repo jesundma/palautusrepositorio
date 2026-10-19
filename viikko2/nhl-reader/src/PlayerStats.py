@@ -1,5 +1,6 @@
 from Player import _Player
 from PlayerReader import PlayerReader
+from rich import print
 
 
 class PlayerStats:

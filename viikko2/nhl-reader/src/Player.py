@@ -6,7 +6,7 @@ class _Player:
         self.goals = player_data['goals']
         self.team = player_data['team']
         self.games = player_data['games']
-        self.id = player_data['id']
+        self.id = player_data.get('id')
 
     def __str__(self):
         return f"{self.name:20} {self.team} {self.assists} + {self.goals} = {self.assists + self.goals}"
