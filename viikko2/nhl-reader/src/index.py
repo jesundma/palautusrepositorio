@@ -1,5 +1,6 @@
 from PlayerReader import PlayerReader
 from PlayerStats import PlayerStats
+from console_view import print_players
 from enums import Nationality, Season
 from rich import print
 from rich.prompt import Prompt
@@ -40,8 +41,7 @@ def main():
         if not players:
             print("No players")
         else:
-            for player in players:
-                print(player)
+            print_players(players)
 
 
 if __name__ == "__main__":
