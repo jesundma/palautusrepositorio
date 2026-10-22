@@ -1,0 +1,40 @@
+#!/bin/sh
+# Run pylint for every uv project (viikko1-viikko6) that has staged .py files.
+# The uv projects are in subfolders, not in the repo root.
+ROOT="$(git rev-parse --show-toplevel)"
+RCFILE="$ROOT/.pylintrc"
+UV="$(command -v uv)"
+
+if [ -z "$UV" ]; then
+    echo "uv not found in PATH, commit aborted."
+    exit 1
+fi
+
+# Staged python files, relative to repo root
+FILES="$(git diff --cached --name-only --diff-filter=ACMR | grep -E '^viikko[1-6]/.*\.py$')"
+[ -z "$FILES" ] && exit 0
+
+# Find the project (nearest pyproject.toml) of each staged file
+PROJECTS=""
+for f in $FILES; do
+    dir="$(dirname "$f")"
+    while [ "$dir" != "." ] && [ ! -f "$ROOT/$dir/pyproject.toml" ]; do
+        dir="$(dirname "$dir")"
+    done
+    [ "$dir" = "." ] && continue
+    PROJECTS="$PROJECTS
+$dir"
+done
+
+failed=0
+for project in $(echo "$PROJECTS" | sort -u); do
+    echo "Running pylint for $project..."
+    # Lint only the staged files of this project, with paths relative to it
+    rel_files="$(echo "$FILES" | grep "^$project/" | sed "s|^$project/||")"
+    (cd "$ROOT/$project" && "$UV" run --with pylint pylint --rcfile="$RCFILE" $rel_files) || failed=1
+done
+
+if [ $failed -ne 0 ]; then
+    echo "Pylint failed, commit aborted."
+    exit 1
+fi
