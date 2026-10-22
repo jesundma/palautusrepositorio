@@ -9,7 +9,7 @@ def main():
     window = Tk()
     window.title("Laskin")
 
-    kayttoliittyma = Kayttoliittyma(sovellus, window)
+    kayttoliittyma = Kayttoliittyma(sovellus, window) #adding comment to make pylint fail for too long line but now it is 100 chars so have to write really long line
     kayttoliittyma.kaynnista()
 
     window.mainloop()
