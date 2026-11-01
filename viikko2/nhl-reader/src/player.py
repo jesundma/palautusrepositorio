@@ -1,4 +1,9 @@
-class _Player:
+"""Player data model."""
+
+
+class Player:  # pylint: disable=too-few-public-methods
+    """A single NHL player's season statistics."""
+
     def __init__(self, player_data: dict):
         self.name = player_data['name']
         self.nationality = player_data['nationality']
@@ -9,4 +14,5 @@ class _Player:
         self.id = player_data.get('id')
 
     def __str__(self):
-        return f"{self.name:20} {self.team} {self.assists} + {self.goals} = {self.assists + self.goals}"
+        total = self.assists + self.goals
+        return f"{self.name:20} {self.team} {self.assists} + {self.goals} = {total}"

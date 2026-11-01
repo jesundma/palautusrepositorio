@@ -1,7 +1,11 @@
+"""Enumerations for seasons and nationalities."""
+
 from enum import Enum
 
 
 class Season(Enum):
+    """Available NHL seasons."""
+
     SEASON_2018_2019 = "2018-19"
     SEASON_2019_2020 = "2019-20"
     SEASON_2020_2021 = "2020-21"
@@ -12,10 +16,13 @@ class Season(Enum):
 
     @property
     def api_value(self) -> str:
+        """Return the season in the format used by the NHL stats API."""
         return f"{self.value[:4]}-{self.value[-2:]}"
 
 
 class Nationality(Enum):
+    """Player nationality codes."""
+
     USA = "USA"
     FIN = "FIN"
     CAN = "CAN"
