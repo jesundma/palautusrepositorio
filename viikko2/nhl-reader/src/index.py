@@ -9,48 +9,51 @@ from console_view import print_players
 from enums import Nationality, Season
 
 
-def main():
-    """Prompt for a season and a nationality and print the top scorers."""
-    valid_seasons = ", ".join(season.value for season in Season)
-    valid_nationalities = ", ".join(nationality.value for nationality in Nationality)
-
+def ask_season() -> Season:
+    """Prompt until a valid season is entered."""
+    valid = ", ".join(season.value for season in Season)
     while True:
-        season = Prompt.ask(
-            f"Enter the season (valid seasons: [blue]{valid_seasons}[/blue])"
-        )
+        answer = Prompt.ask(f"Enter the season (valid seasons: [blue]{valid}[/blue])")
         try:
-            selected_season = Season(season)
-            break
+            return Season(answer)
         except ValueError:
-            rprint(f"Invalid season. Choose one of: [blue]{valid_seasons}[/blue]")
+            rprint(f"Invalid season. Choose one of: [blue]{valid}[/blue]")
 
-    url = f"https://studies.cs.helsinki.fi/nhlstats/{selected_season.api_value}/players"
-    stats = PlayerStats(PlayerReader(url))
 
+def ask_nationality() -> Nationality | None:
+    """Prompt until a valid nationality is entered; return None to exit."""
+    valid = ", ".join(nationality.value for nationality in Nationality)
     while True:
-        nationality = Prompt.ask(
-            f"Enter the nationality (valid nationalities: [blue]{valid_nationalities}[/blue], "
+        answer = Prompt.ask(
+            f"Enter the nationality (valid nationalities: [blue]{valid}[/blue], "
             "X to exit)"
         ).upper()
-        if nationality == "X":
-            return
-
+        if answer == "X":
+            return None
         try:
-            selected_nationality = Nationality[nationality]
+            return Nationality[answer]
         except KeyError:
-            rprint(f"Invalid nationality. Choose one of: [blue]{valid_nationalities}[/blue]")
-            continue
+            rprint(f"Invalid nationality. Choose one of: [blue]{valid}[/blue]")
 
-        players = stats.top_scorers_by_nationality(selected_nationality.value)
 
-        rprint(
-            f"[bold]Season {selected_season.value} players for "
-            f"{selected_nationality.value}[/bold]"
-        )
-        if not players:
-            rprint("No players")
-        else:
-            print_players(players)
+def show_players(stats: PlayerStats, season: Season, nationality: Nationality) -> None:
+    """Print the top scorers for the given nationality."""
+    players = stats.top_scorers_by_nationality(nationality.value)
+    rprint(f"[bold]Season {season.value} players for {nationality.value}[/bold]")
+    if players:
+        print_players(players)
+    else:
+        rprint("No players")
+
+
+def main():
+    """Prompt for a season and a nationality and print the top scorers."""
+    season = ask_season()
+    url = f"https://studies.cs.helsinki.fi/nhlstats/{season.api_value}/players"
+    stats = PlayerStats(PlayerReader(url))
+
+    while (nationality := ask_nationality()) is not None:
+        show_players(stats, season, nationality)
 
 
 if __name__ == "__main__":
