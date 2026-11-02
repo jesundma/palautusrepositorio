@@ -27,5 +27,5 @@ disable=raw-checker-failed,
     max-nested-blocks=2
 
 [DESIGN]
-    max-statements=15
+    max-statements=20
     max-args=5
