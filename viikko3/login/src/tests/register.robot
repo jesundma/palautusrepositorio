@@ -34,15 +34,7 @@ Register With Username That Is Already In Use
 Reset Application Create User And Go To Register Page
     Reset Application
     Create User    kalle    kalle123
-    Go To    ${REGISTER_URL}
-
-Set Username
-    [Arguments]    ${username}
-    Fill Text    id=username    ${username}
-
-Set Password
-    [Arguments]    ${password}
-    Fill Secret    id=password    $password
+    Go To Register Page
 
 Set Password Confirmation
     [Arguments]    ${password}
