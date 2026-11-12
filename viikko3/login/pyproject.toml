@@ -13,4 +13,5 @@ dev = [
     "requests>=2.32.5",
     "robotframework-browser>=20.5.0",
     "robotframework-browser-batteries>=20.5.0",
+    "robotcode[analyze,runner]>=2.8.0",
 ]
