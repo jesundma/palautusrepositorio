@@ -4,6 +4,8 @@ Testit rakennettiin ohjeistuksen mukaisesti, ohjeistus annettiin käyttäjätapa
 
 Pyydettäessä agenttia luomaan toiminnallisuudet siten, että testit läpäistään kävi ilmi, että salasanakenttien saman sisällön tekevä toiminnallisuus löytyi jo koodista. Agentti lisäsi vain toiminnallisuuden user_service.py, joka tarkisti, ettei salasana ole pelkistä kirjaimista koostuva. Syötteessä kielsin erityisesti testien muuttamisen, vain toiminnallisuuksia sai muuttaa.
 
-Agenttia ei tarvinnut pääsääntöisesti ohjata kovinkaan paljoa kutakin tehtävää koskevan syötteen syöttämisen jälkeen. Edellä on kerrottu ohjaustarpeet, syötteesiin pyritiin myös kirjoittamaan rajoitteita ja määrittelemään sallittu toiminta.
+Sovellus rikottiin kolmella tavalla, poistamalla salanan syötön testaaminen rekisteröidyttäessä, asettamalla salasanan vähimmäispituudeksi 10 merkkiä 8 merkin sijaan ja muuttamalla tarkistus pelkkiä kirjaimia sisältävä salasanan varalta siten, että salasanassa ei tarvitse välttämättä olla numeroita. 
+
+Agenttia ei tarvinnut pääsääntöisesti ohjata kovinkaan paljoa kutakin tehtävää koskevan syötteen syöttämisen jälkeen. Edellä on kerrottu ohjaustarpeet, syötteisiin pyritiin myös kirjoittamaan rajoitteita ja määrittelemään sallittu toiminta.
 
 Olen aiemmin käyttänyt agenttia yksittäisen tehtävän toteuttamiseen ja huomannut, että jos tehtävä on kovin laaja-alainen, esimerkiksi useampaan tiedostoon kohdistuva agentti helposti tekee muutoksia tehtävänannon vastaisesti tai ulkopuolelta. Tämä on opettanut kirjoittamaan laajuudeltaan suppeampia tehtävänantoja ja rajaamaan sallittua toimintaa.

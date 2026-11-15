@@ -48,7 +48,7 @@ class UserService:
                 f"User with username {username} already exists"
             )
 
-        if len(password) < 8:
+        if len(password) < 10:
             raise UserInputError("Password must be at least 8 characters long")
 
         if password != password_confirmation:
