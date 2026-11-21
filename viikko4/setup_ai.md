@@ -1,0 +1,1 @@
+Pyydin agenttia luomaan setup metodin, johon siirretään koodin toisteiset osat. Metodiin siirrettiin mock- oliot, niiden palautusarvot ja Kauppa- olio. Nyt testit voivat käyttää niitä self- attribuutteina.
