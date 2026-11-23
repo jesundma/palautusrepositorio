@@ -44,7 +44,10 @@ class Ostoskori:
             return
 
     def tyhjenna(self):
-        """Tyhjennystoimintoa ei ole vielä toteutettu."""
+        """Poistaa kaikki ostokset ja nollaa määrän ja hinnan."""
+        self._ostokset.clear()
+        self._maara = 0
+        self._hinta = 0
 
     def ostokset(self):
         """Palauttaa ostoskorin ostokset."""
