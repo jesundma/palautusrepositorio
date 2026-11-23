@@ -12,6 +12,12 @@ class TestOstoskori(unittest.TestCase):
         """Luo jokaiselle testille tyhjän ostoskorin."""
         self.kori = Ostoskori()
 
+    def assert_kori_tyhja(self):
+        """Tarkistaa tyhjän ostoskorin määrän, hinnan ja ostokset."""
+        self.assertEqual(self.kori.tavaroita_korissa(), 0)
+        self.assertEqual(self.kori.hinta(), 0)
+        self.assertEqual(len(self.kori.ostokset()), 0)
+
     def test_ostoskorin_hinta_ja_tavaroiden_maara_alussa(self):
         """Tyhjän ostoskorin hinta ja määrä ovat nollia."""
         self.assertEqual(self.kori.hinta(), 0)
@@ -83,6 +89,8 @@ class TestOstoskori(unittest.TestCase):
         self.assertEqual(len(ostokset), 1)
         self.assertEqual(ostokset[0].tuotteen_nimi(), "Maito")
         self.assertEqual(ostokset[0].lukumaara(), 1)
+        self.assertEqual(self.kori.tavaroita_korissa(), 1)
+        self.assertEqual(self.kori.hinta(), 3)
 
     def test_viimeisen_tuotteen_poistaminen_tyhjentaa_korin(self):
         """Ainoan tuotteen poistamisen jälkeen kori on tyhjä."""
@@ -90,9 +98,31 @@ class TestOstoskori(unittest.TestCase):
 
         self.kori.poista_tuote(Tuote("Maito", 3))
 
-        self.assertEqual(self.kori.tavaroita_korissa(), 0)
-        self.assertEqual(self.kori.hinta(), 0)
-        self.assertEqual(len(self.kori.ostokset()), 0)
+        self.assert_kori_tyhja()
+
+    def test_poistaminen_etsii_oikean_tuotteen(self):
+        """Myöhemmin lisätyn tuotteen poisto jättää muut tuotteet koriin."""
+        self.kori.lisaa_tuote(Tuote("Maito", 3))
+        self.kori.lisaa_tuote(Tuote("Leipä", 2))
+
+        self.kori.poista_tuote(Tuote("Leipä", 2))
+
+        self.assertEqual(self.kori.tavaroita_korissa(), 1)
+        self.assertEqual(self.kori.hinta(), 3)
+        self.assertEqual(len(self.kori.ostokset()), 1)
+        self.assertEqual(self.kori.ostokset()[0].tuotteen_nimi(), "Maito")
+
+    def test_korissa_olemattoman_tuotteen_poistaminen(self):
+        """Korissa olemattoman tuotteen poisto ei muuta koria."""
+        self.kori.lisaa_tuote(Tuote("Maito", 3))
+
+        self.kori.poista_tuote(Tuote("Leipä", 2))
+
+        self.assertEqual(self.kori.tavaroita_korissa(), 1)
+        self.assertEqual(self.kori.hinta(), 3)
+        self.assertEqual(len(self.kori.ostokset()), 1)
+        self.assertEqual(self.kori.ostokset()[0].tuotteen_nimi(), "Maito")
+        self.assertEqual(self.kori.ostokset()[0].lukumaara(), 1)
 
     def test_tyhjenna_poistaa_kaikki_ostokset(self):
         """Tyhjentäminen poistaa tuotteet ja nollaa määrän ja hinnan."""
@@ -102,6 +132,4 @@ class TestOstoskori(unittest.TestCase):
 
         self.kori.tyhjenna()
 
-        self.assertEqual(self.kori.tavaroita_korissa(), 0)
-        self.assertEqual(self.kori.hinta(), 0)
-        self.assertEqual(len(self.kori.ostokset()), 0)
+        self.assert_kori_tyhja()

@@ -21,27 +21,32 @@ class Ostoskori:
         """Palauttaa ostoskorin kokonaishinnan."""
         return self._hinta
 
+    def _etsi_ostos(self, tuote: Tuote):
+        for ostos in self._ostokset:
+            if ostos.tuotteen_nimi() == tuote.nimi():
+                return ostos
+        return None
+
     def lisaa_tuote(self, lisattava: Tuote):
         """Lisää tuotteen ostoskoriin."""
         self._maara += 1
         self._hinta += lisattava.hinta()
-        for ostos in self._ostokset:
-            if ostos.tuotteen_nimi() == lisattava.nimi():
-                ostos.muuta_lukumaaraa(1)
-                return
-        self._ostokset.append(Ostos(lisattava))
+        ostos = self._etsi_ostos(lisattava)
+        if ostos is None:
+            self._ostokset.append(Ostos(lisattava))
+        else:
+            ostos.muuta_lukumaaraa(1)
 
     def poista_tuote(self, poistettava: Tuote):
         """Poistaa yhden kappaleen annettua tuotetta ostoskorista."""
-        for ostos in self._ostokset:
-            if ostos.tuotteen_nimi() != poistettava.nimi():
-                continue
-            ostos.muuta_lukumaaraa(-1)
-            self._maara -= 1
-            self._hinta -= ostos.tuote.hinta()
-            if ostos.lukumaara() == 0:
-                self._ostokset.remove(ostos)
+        ostos = self._etsi_ostos(poistettava)
+        if ostos is None:
             return
+        ostos.muuta_lukumaaraa(-1)
+        self._maara -= 1
+        self._hinta -= ostos.tuote.hinta()
+        if ostos.lukumaara() == 0:
+            self._ostokset.remove(ostos)
 
     def tyhjenna(self):
         """Poistaa kaikki ostokset ja nollaa määrän ja hinnan."""
